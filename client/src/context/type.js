@@ -1,7 +1,9 @@
-export const SHOW_PRODUCT='SHOW_PRODUCT'
+export const GET_PRODUCT='SHOW_PRODUCT'
 export const SINGLE_PRODUCT='SINGLE_PRODUCT'
-export const SEARCH_PRODUCT='SEARCH_PRODUCT'
-export const LETEST_PRODUCT='LETEST_PRODUCT'
+export const UPDATE_PRODUCT ='UPDATE_PRODUCT'
+export const EDIT_FORM ='EDIT_FORM'
+export const CLEAR_EDITFORM ='CLEAR_EDITFORM'
+
 
 
 export const ADD_CART='ADD_CART'
@@ -22,13 +24,6 @@ export const CLEAR_ERROR='CLEAR_ERROR'
 export const SET_SUCCESS='SET_SUCCESS'
 export const CLEAR_SUCCESS='CLEAR_SUCCESS'
 
-
-
-export const ADD_CATEGORIES ='ADD_CATEGORIES'
-export const GET_CATEGORIES ='GET_CATEGORIES'
-export const DELETE_CATEGORIES ='DELETE_CATEGORIES'
-
-
 export const SUCCES_REGISTER='SUCCES_REGISTER'
 export const SUCCES_LOGIN='SUCCES_LOGIN'
 export const LOG_OUT='LOG_OUT'
@@ -37,14 +32,8 @@ export const SET_MESSAHE ='SET_MESSAHE'
 export const CLEAR_MESSAGE='CLEAR_MESSAGE'
 
 
-
-export const ADD_CONTACT = 'ADD_CONTACT'
-export const ERROR_CONTACT = 'ERROR_CONTACT'
-
 export const SET_USER = 'USER'
 
-
-export const MAKE_PAYMENT = 'MAKE_PAYMENT'
 
 
 

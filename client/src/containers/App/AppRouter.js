@@ -19,7 +19,12 @@ class AppRouter extends React.Component {
          <Route
           exact
           path={`${url}/stock`}
-          component={asyncComponent(() => import('../Product/productList/productList'))}
+          component={asyncComponent(() => import('../Product/productList/ProductTable'))}
+        />
+         <Route
+          exact
+          path={`${url}/edit-product`}
+          component={asyncComponent(() => import('../Product/productList/EditProduct'))}
         />
 
          <Route

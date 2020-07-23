@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter,Switch,Route, Redirect } from 'react-router-dom';
 import AdminState from './context/adminContext/adminState'
+import ProductState from './context/productContext/productState'
 import PrivetRoute from './privetRoute'
 import App from './containers/App/App';
 import asyncComponent from './helpers/AsyncFunc';
@@ -12,6 +13,7 @@ const PublicRoutes = () => {
 
   return (
   <AdminState>
+    <ProductState>
       <BrowserRouter>
       <Switch>
       <div>
@@ -63,6 +65,7 @@ const PublicRoutes = () => {
       </div>
       </Switch>
       </BrowserRouter>
+      </ProductState>
     </AdminState>
   );
 };

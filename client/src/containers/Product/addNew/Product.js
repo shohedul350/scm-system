@@ -1,12 +1,10 @@
-import React, { useState, useContext, useEffect} from "react";
-// import UploadContext from '../../context/productContext/productContext'
+import React, { useState, useContext} from "react";
+import ProductContext from '../../../context/productContext/productContext'
 
 const Product=()=> {
 
-// const {uploadData,categories,getCategories} = useContext(UploadContext);
-// useEffect(()=>{
-//   getCategories()
-// },[])
+const {uploadProduct} = useContext(ProductContext);
+
     const [formData,setFormData]=useState({
       name:"",
       price:"",
@@ -24,6 +22,11 @@ const {name,price,unit,stock,}=formData
 
 const onSubmit=e=>{
   e.preventDefault();
+  
+  uploadProduct(formData)
+  alert('Success');
+  e.target.reset();
+
 //   if(!formData.categories){
 //     alert('please select categories')
 //   }
@@ -81,6 +84,7 @@ const onSubmit=e=>{
                       <label htmlFor="unit"> Unit: </label>
                       <select name="unit" 
                       className="form-control"
+                      value={unit}
                       onChange={e=> onChange(e)}
                    
                       required>
@@ -123,8 +127,6 @@ const onSubmit=e=>{
                </div>
                </div>
              
-        
-    
     )
 }
 

@@ -5,20 +5,23 @@ const upload = require('../../middleware/uploadMiddleware');
 // const AuthenTicateAdmin = require('../../middleware/AuthenticateAdmin');
 
 const router = express.Router();
-const Product = require('../../models/productModel/Products');
+const Product = require('../../models/productModel');
 
 
 
 //  upload product
 //  api/product/uploadproduct
 
-router.post('/uploadproduct', upload.single('image'), [
+router.post('/uploadProduct', upload.single('image'), [
   check('name', 'Please provide name')
     .not()
     .isEmpty(),
   // check('image', 'Please provide Image')
   //   .not()
   //   .isEmpty(),
+  check('unit', 'please provide Unit')
+  .not()
+  .isEmpty(),
   check('price', 'Please provide Price')
     .not()
     .isEmpty(),
@@ -26,9 +29,7 @@ router.post('/uploadproduct', upload.single('image'), [
     .not()
     .isEmpty(),
 
-  check('info', 'please provide Info')
-    .not()
-    .isEmpty(),
+ 
 ],
 async (req, res, next) => {
   const errors = validationResult(req).formatWith(errorFormator);
@@ -41,9 +42,10 @@ async (req, res, next) => {
     const product = new Product({
       name: req.body.name,
       image: req.file.path,
+      unit: req.body.unit,
       price: req.body.price,
       stock: req.body.stock,
-      info: req.body.info,
+     
     });
     const newProduct = await product.save();
     res.status(200).json({ msg: 'Product Upload Succesfully', newProduct });
@@ -59,16 +61,16 @@ async (req, res, next) => {
 
 
 // allItemProduct
-router.get('/allItemProduct', async (req, res, next) => {
+router.get('/allProduct', async (req, res, next) => {
   try {
     const { page, perPage } = req.query;
 
     const options = {
       page: parseInt(page, 10) || 1,
-      limit: parseInt(perPage, 10) || 4,
+      limit: parseInt(perPage, 10) || 10,
     };
     const getAllProduct = await Product.paginate({ }, options);
-    // const getAllProduct = await Product.find();
+  // const getAllProduct = await Product.find();
     if (!getAllProduct) {
       return res.status(404).json({ msg: 'Product Not Found' });
     }
@@ -98,11 +100,11 @@ router.get('/singleProduct/:id', async (req, res, next) => {
 //  update product by product id
 //  api/product/updateproduct/:id
 
-router.put('/updateproduct/:id', async (req, res) => {
+router.put('/updateProduct/:id', async (req, res) => {
   try {
     const updateProduct = await
     Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.status(200).json({ message: 'Product Update Succesfully ', updateProduct });
+    res.status(200).json({ msg: 'Product Update Succesfully ', updateProduct });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -111,7 +113,7 @@ router.put('/updateproduct/:id', async (req, res) => {
 //  delete  product by product id
 //  api/product//deleteproduct/:id
 
-router.delete('/deleteProduct/:id', AuthenTicateAdmin, async (req, res, next) => {
+router.delete('/deleteProduct/:id', async (req, res, next) => {
   try {
     const deleteProduct = await
     Product.findByIdAndRemove(req.params.id);

@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
 const productSchema = mongoose.Schema({
- 
   name: {
     type: String,
     maxlength: 50,
@@ -15,6 +14,10 @@ const productSchema = mongoose.Schema({
   stock: {
     type: Number,
     default: 0,
+  },
+  unit:{
+       type: String,
+       require: true,
   },
   image: {
     type: String,
@@ -36,7 +39,7 @@ const productSchema = mongoose.Schema({
 {
   timestamps: true,
 });
-productSchema.index({ categories: 'text', title: 'text', company: 'text' });
+productSchema.index({ name: 'text'});
 
 
 productSchema.plugin(mongoosePaginate);
