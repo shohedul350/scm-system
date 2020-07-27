@@ -8,6 +8,7 @@ import {
   TopbarMessage,
   TopbarSearch,
   TopbarUser,
+  TopbarcartButton
 
 } from '../../components/topbar';
 
@@ -57,6 +58,9 @@ class Topbar extends Component {
               className="isoMsg">
               <TopbarMessage locale={locale} />
             </li>
+            <li>
+            <TopbarcartButton/>
+            </li>
            
 
             <li
@@ -64,6 +68,7 @@ class Topbar extends Component {
               className="isoUser">
               <TopbarUser locale={locale} />
             </li>
+            
           </ul>
         </Header>
       </TopbarWrapper>

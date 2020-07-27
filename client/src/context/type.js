@@ -4,6 +4,8 @@ export const UPDATE_PRODUCT ='UPDATE_PRODUCT'
 export const EDIT_FORM ='EDIT_FORM'
 export const CLEAR_EDITFORM ='CLEAR_EDITFORM'
 
+export const GET_CUSTOMER='GET_CUSTOMER'
+export const UPDATE_CUSTOMER='UPDATE_CUSTOMER'
 
 
 export const ADD_CART='ADD_CART'

@@ -1,0 +1,15 @@
+  
+.custombtn{
+    margin-top: 2.5px;
+    height: 45px;
+width: 120px;
+background:#4267b2;
+white-space: nowrap;
+border-radius: .5px;
+font-size: 17px;
+color: #fff;
+transition: all .2s ease-out, color .2s ease-out;
+border: 0;
+cursor: pointer;
+font-weight: 400;
+font-family: 'Poppins', sans-serif;}

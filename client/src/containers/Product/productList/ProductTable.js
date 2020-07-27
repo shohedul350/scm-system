@@ -5,7 +5,7 @@ import ProductContext from '../../../context/productContext/productContext'
 import ProductListPageWrapper from './productList.style';
 
 const ProductTable = () => {
-  const {getProduct,message,products,deleteProduct,editFormFun} = useContext(ProductContext)
+  const {getProduct,message,products,deleteProduct,editFormFun,addCart} = useContext(ProductContext)
 
   useEffect(()=>{
     getProduct()
@@ -89,7 +89,7 @@ const ProductTable = () => {
                  {product.stock  == 0 ? ( <button className="btn btn-info"
                                    disabled> <i className="fas fa-cart-plus"/></button>) : (
                     <button className="btn btn-info"
-                    //  onClick={()=>addCart(_id)}
+                    onClick={()=>addCart(product._id)}
                       disabled={product.inCart ? true : false}>
                       { product.inCart ? (
                     <p className="text-capitalize mb-0"

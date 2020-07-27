@@ -1,27 +1,26 @@
 import {
-    GET_PRODUCT,
-    UPDATE_PRODUCT,
+    GET_CUSTOMER,
+    SET_MESSAHE,
+    UPDATE_CUSTOMER,
+    CLEAR_MESSAGE,
     EDIT_FORM,
     CLEAR_EDITFORM,
-    SET_MESSAHE,
-    CLEAR_MESSAGE,
-    ADD_CART
 } from '../type'
 
 
 
 export default (state,action)=>{
     switch(action.type){
-         case GET_PRODUCT:
+         case GET_CUSTOMER:
             return{
                 ...state,
-                products: action.payload,
+               customers: action.payload,
             }
 
-            case  UPDATE_PRODUCT:
+            case  UPDATE_CUSTOMER:
                 return{
                 ...state,
-                products:state.products.map(product=>product._id === action.payload._id ? action.payload:product)
+                customers:state.customers.map(customer=>customer._id === action.payload._id ? action.payload:customer)
                    }
          case SET_MESSAHE:
             return{
@@ -47,12 +46,6 @@ export default (state,action)=>{
                     ...state,
                     message:null
                 }
-        case ADD_CART:
-                    return{
-                        ...state,
-                        products:action.payload.tempProduct,
-                        cart:[...state.cart,action.payload.product]
-                    }
 
         default:
             return state

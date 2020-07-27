@@ -9,6 +9,7 @@ import {
     CLEAR_MESSAGE,
     EDIT_FORM,
     CLEAR_EDITFORM,
+    ADD_CART
 } from '../type'
 
  const ProductState=(props)=> {
@@ -16,6 +17,7 @@ import {
     const initialState={
           products:[],
           product: null,
+          cart:[],
           message:null,
           editForm:null,
     }
@@ -113,6 +115,24 @@ const editFormFun=(product)=>{
       }) 
   }
   
+
+  const getItem = id => {
+    const product = state.products.find(item => item._id === id);
+    return product;
+  };
+   const addCart=(id)=>{
+    let tempProduct = [...state.products]
+    const index = tempProduct.indexOf(getItem(id));
+    const product = tempProduct[index];
+    product.inCart = true;
+    const price = product.price;
+    product.total = price;
+    dispatch({
+      type:ADD_CART,
+      payload:{tempProduct,product},
+  })
+  
+  }
   
 
 
@@ -138,7 +158,9 @@ const editFormFun=(product)=>{
         updateProduct,
         editForm:state.editForm,
         editFormFun,
-        clearEditForm
+        clearEditForm,
+        addCart,
+        cart:state.cart
     }}>
        {props.children}
     </ProductContext.Provider>
