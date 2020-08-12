@@ -4,15 +4,15 @@ const errorFormator = require('../../utilis/errorFormator');
 // const AuthenTicateAdmin = require('../../middleware/AuthenticateAdmin');
 
 const router = express.Router();
-const Customer = require('../../models/customerModel');
+const Customer = require('../../models/CustomerModel');
 
 
 
 //  add new product
-//  api/add-customer
+//  api/addCustomer
 
 router.post('/addCustomer', [
-  check('customerName', 'Please provide Customer Name')
+  check('orderNumber', 'Please provide orderId')
     .not()
     .isEmpty(),
 
@@ -29,7 +29,8 @@ async (req, res, next) => {
   }
   try {
     const customer = new Customer({
-      customerName: req.body.customerName,
+      orderNumber: req.body.orderNumber,
+      vendor: req.body.vendor,
       address: req.body.address,
       mobile: req.body.mobile,
       email: req.body.email,
@@ -50,13 +51,17 @@ async (req, res, next) => {
 // allItemProduct
 router.get('/allCustomer', async (req, res, next) => {
   try {
-    const { page, perPage } = req.query;
+    // const { page, perPage } = req.query;
 
-    const options = {
-      page: parseInt(page, 10) || 1,
-      limit: parseInt(perPage, 10) || 4,
-    };
-    const getAllCustomer = await Customer.paginate({ }, options);
+    // const options = {
+    //   page: parseInt(page, 10) || 1,
+    //   limit: parseInt(perPage, 10) || 4,
+    // };
+    // const getAllCustomer = await Customer.paginate({ }, options).populate('invoice')
+    // if (!getAllCustomer) {
+    //   return res.status(404).json({ msg: 'Customer Not Found' });
+    // }
+      const getAllCustomer = await Customer.find().populate('invoice')
     if (!getAllCustomer) {
       return res.status(404).json({ msg: 'Customer Not Found' });
     }
@@ -70,7 +75,7 @@ router.get('/allCustomer', async (req, res, next) => {
 //  get single customer
 //  api/customer/:id
 
-router.get('/customer/:id', async (req, res, next) => {
+router.get('/singleCustomer/:id', async (req, res, next) => {
   try {
     const customer = await Customer.findById(req.params.id);
     if (!customer) {

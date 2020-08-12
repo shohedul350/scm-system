@@ -5,7 +5,7 @@ import ProductContext from '../../../context/productContext/productContext'
 import ProductListPageWrapper from './productList.style';
 
 const ProductTable = () => {
-  const {getProduct,message,products,deleteProduct,editFormFun,addCart} = useContext(ProductContext)
+  const {getProduct,products,deleteProduct,editFormFun,addCart} = useContext(ProductContext)
 
   useEffect(()=>{
     getProduct()

@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
-
 const customerSchema = mongoose.Schema({
-  customerName: {
+  orderNumber: {
+    type: String,
+    required: true
+  },
+  vendor: {
     type: String,
     maxlength: 50,
     required: true,
@@ -21,14 +24,14 @@ const customerSchema = mongoose.Schema({
   },
   invoice:[
     {
-    type: Schema.Types.ObjectId,
-    ref: 'Invoice'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Invoice'
     }
   ],
   bill:[
     {
-    type: Schema.Types.ObjectId,
-    ref: 'Bill'    
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Bill'   
     }
   ],
 },
@@ -36,7 +39,7 @@ const customerSchema = mongoose.Schema({
 {
   timestamps: true,
 });
-customerSchema.index({ mobile: 'text'});
+customerSchema.index({ orderNumber: 'text'});
 
 
 customerSchema.plugin(mongoosePaginate);

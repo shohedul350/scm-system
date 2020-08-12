@@ -1,10 +1,63 @@
-import React from 'react'
+import React,{useContext,useEffect} from 'react'
 import moment from "moment";
-export default function CustomerInvoice() {
+import AdminContext from '../../context/adminContext/adminContext'
+import Context from '../../context/invoiceContext/InvoiceContext'
+import Print from './Print'
+export default function CustomerInvoice(props) {
+    const { adminDetails } = useContext(AdminContext);
+    const {getSingleInvoice,invoice} = useContext(Context)
+ 
+ const sigInvoice = invoice || {}
+ const {customer,products} = sigInvoice || {}
+ const {address,orderNumber,mobile,email} = customer || {}
+
+
     const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+    useEffect(()=>{
+        getSingleInvoice(props.match.params.id)
+      },[])
+     
     return (
-        <div className="text-center m-5">
-        <div class="d-flex justify-content-around pt-5">
+        <div className="container">
+               <div className="card">
+      <div className="card-header">
+      Invoice
+      <strong> {currentDate}</strong> 
+      <span className="float-right"> <strong>Status:</strong>Delevired</span>
+      </div>
+     
+                         
+   
+      <div class="card-body">
+      <div class="row mb-4">
+      <div class="col-sm-6">
+      <h6 class="mb-3">From:</h6>
+      <div>
+          <strong>{adminDetails.companyName}</strong>
+      </div>
+      <div>{adminDetails.companyDetails}</div>
+                <div>Address: {adminDetails.companyAddress}</div>
+                <div>Email: {adminDetails.companyEmail}</div>
+                <div>Phone: {adminDetails.companyMobile}</div>
+      </div>
+      
+      <div class="col-sm-6">
+          <h6 class="mb-3">To:</h6>
+          <div>
+        <strong>Order Number: {orderNumber}</strong>
+          </div>
+        <div>Address: {address}</div>
+                    <div>Email: {email}</div>
+          <div>Phone: {mobile}</div>
+      </div>
+      
+      
+      
+      </div>
+      </div>
+      </div>
+        {/* <div class="d-flex justify-content-around pt-5">
                 <div class="">
                 <strong>SL NO-</strong>
                 </div>
@@ -19,79 +72,71 @@ export default function CustomerInvoice() {
                 <h3>LALMONIRHAT PLASTIC</h3>
                 <h4>All Kinds of  Plastic,Rubber,Bag & Light Manufacturer & Suppliers.</h4>
                 <h5>136/A Dholpur,Bow Bazar,Zatrabari,Dhaka</h5>
-            </div>
+            </div> */}
          
 
             <div className="customer product details m-auto text-center">
                 <table className="table  table-sm table-bordered table-striped text-center" style={{}}>
-                <thead>
+                {/* <thead>
                 <tr>
                    
-                    <th scope="col">Order NO-01245A56</th>
-                    <th scope="col">Address-Pirganj,Rangpur</th>
+                <th scope="col">Order NO-{invoice.orderNumber}</th>
+                    <th scope="col">Address-{invoice.address}</th>
                     <th colspan="2"></th>
                     
                 </tr>
-                </thead>
+                </thead> */}
                 <thead>
                     
                 <tr>
                     <th scope="col">Serial No</th>
                     <th scope="col">Product Details</th>
+                    <th scope="col">Unit</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Packing</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="col">01</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
-                <tr>
-                    <th scope="col">02</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
-                <tr>
-                    <th scope="col">03</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
-                <tr>
-                    <th scope="col">04</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
-                <tr>
-                    <th scope="col">05</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
-                <tr>
-                    <th scope="col">06</th>
-                    <th scope="col">Rubber star</th>
-                    <th scope="col">5o</th>
-                    <th scope="col">3</th>
-                    
-                </tr>
+
+                  
+                {  
+             !products ? (
+                
+                    <div className="container d-flex justify-content-center p-4">
+                                  <div className="spinner-border m-auto" role="status">
+                                   <span className="sr-only">Loading...</span>
+                               </div>
+                                
+                                 <p className="pl-1">Loading...</p> 
+                                
+                                </div>
+                           
+                                ) : (
+
+    invoice.products.map((produc,index)=>(
+            <tr>
+              <td className="">{index+1}</td>
+            <td className="">{produc.name}</td>
+            <td className="">{produc.unit}</td>
+            <td className="">{produc.qty}</td>
+            <td className="">{produc.totalPacking}</td>
+            
+            </tr>
+    )
+          )
+        )}
+               
+             
+               
+             
+             
                 </tbody>
                 </table>
             </div>
         
 
             
-
+   <Print name='emon'/>
         </div>
     )
 }

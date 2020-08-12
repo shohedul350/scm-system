@@ -1,3 +1,4 @@
+  
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');

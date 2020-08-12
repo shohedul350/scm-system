@@ -1,24 +1,27 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
+import CustomerContext from '../../context/customerContext/CustomerContext'
 export default function CreateCustomer() {
-//   const {loginUser,userAuth,errors,setError,clearError} = useContext(AuthContext);
+const {addCustomer,message} = useContext(CustomerContext);
 //   useEffect(()=>{
 //     if(userAuth){
 // props.history.push('/')
 //     }
 //   },[userAuth,props.history])
   const [formData,setFormData]=useState({
-          orderNo:"",
+          orderNumber:"",
           vendor:"",
           address:"",
           mobile:"",
           email:""
        
       });
- const {orderNo,vendor,address,mobile,email}=formData
+ const {orderNumber,vendor,address,mobile,email}=formData
 
 const onSubmit=e=>{
     e.preventDefault();
    console.log(formData)
+   addCustomer(formData)
+   alert('success')
     }
 
 
@@ -33,8 +36,8 @@ const onChange=e=>{setFormData({...formData,[e.target.name]:e.target.value});}
       <input type="number"
        className="form-control"
          placeholder="Enter Order Number"
-         name="orderNo"
-         value={orderNo}
+         name="orderNumber"
+         value={orderNumber}
          onChange={e=> onChange(e)}
          />
     </div>

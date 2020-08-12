@@ -2,42 +2,70 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
 const invoiceSchema = mongoose.Schema({
-  customer: {
-    type: Schema.Types.ObjectId,
-    ref: 'Customer',
+ orderNumber:{
+   type: Number,
+    required: true,
+ },
+  customer:{
+    type: Object,
     required: true,
   },
-  product:[{
+  inCart: {
+    type: Boolean,
+    default: false,
+  },
+  products:[{
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     name: {
-        type: String,
-        maxlength: 50,
-        required: true,
-      },
-    unit: {
       type: String,
       required: true,
     },
-    quantity: {
-        type: Number,
-        required: true, 
-      },
+    price: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    qty: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    unit:{
+         type: String,
+         required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    totalPacking: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    inCart: {
+      type: Boolean,
+      default: false,
+    },
+    total: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
     }
   ],
-  totalPrice: {
-    type: Number,
-    required: true,
-  }
 },
+
 
 {
   timestamps: true,
 });
-invoiceSchema.index({ mobile: 'text' });
+invoiceSchema.index({ customer: 'text' });
 
 
 invoiceSchema.plugin(mongoosePaginate);
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 module.exports = Invoice;
-
-
-

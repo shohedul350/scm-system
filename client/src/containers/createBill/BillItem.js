@@ -1,17 +1,25 @@
 import React,{useContext,useEffect} from 'react'
 import moment from "moment";
 import AdminContext from '../../context/adminContext/adminContext'
-  
-export default function Bill() {
-  const { adminDetails } = useContext(AdminContext);
-  const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
-  return (
-               <div class="container">
+
+export default function BillItem({items}) {
+    const item = items[0]
+    const allProduct=[]
+    items.map(item=>{
+      item.map(itm=>{
+        allProduct.push=itm
+      })
+    })
+    console.log(allProduct)
+    const { adminDetails } = useContext(AdminContext);
+    const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+    return (
+        <div class="container">
         <div class="card">
       <div class="card-header">
-      Invoice
+      Bill
       <strong>01/01/01/2018</strong> 
-        <span class="float-right"> <strong>Status:</strong>Delivered</span>
+        <span class="float-right"> <strong>Status:</strong>create bill</span>
       
       </div>
       <div class="card-body">
@@ -49,44 +57,42 @@ export default function Bill() {
       <th class="center">serial</th>
       <th>Product Description</th>
         <th class="center">Qty</th>
-        <th class="center">Price</th>
         <th class="center">Unit</th>
+        <th class="center">Price</th>
+     
       <th class="right">Total</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td class="center">1</td>
-        <td class="left strong">Origin License</td>
-        <td class="center">10</td>
-        <td class="center">50</td>
-        <td class="center">pices</td>
-        <td class="right">500</td>
-      </tr>
-      <tr>
-        <td class="center">1</td>
-        <td class="left strong">Origin License</td>
-        <td class="center">10</td>
-        <td class="center">50</td>
-        <td class="center">pices</td>
-        <td class="right">500</td>
-      </tr>
-      <tr>
-        <td class="center">1</td>
-        <td class="left strong">Origin License</td>
-        <td class="center">10</td>
-        <td class="center">50</td>
-        <td class="center">pices</td>
-        <td class="right">500</td>
-      </tr>
-      <tr>
-        <td class="center">1</td>
-        <td class="left strong">Origin License</td>
-        <td class="center">10</td>
-        <td class="center">50</td>
-        <td class="center">pices</td>
-        <td class="right">500</td>
-      </tr>
+      {  
+             !allProduct ? (
+                
+                    <div className="container d-flex justify-content-center p-4">
+                                  <div className="spinner-border m-auto" role="status">
+                                   <span className="sr-only">Loading...</span>
+                               </div>
+                                
+                                 <p className="pl-1">Loading...</p> 
+                                
+                                </div>
+                           
+                                ) : (
+
+                                  allProduct.map((itm,index)=>(
+            <tr>
+              <td className="">{index+1}</td>
+            <td className="">{itm.name}</td>
+            <td className="">{itm.qty}</td>
+            <td className="">{itm.unit}</td>
+            <td className="">{itm.price}</td>
+         
+            <td className="">{itm.qty*itm.price}</td>
+            
+            </tr>
+    )
+          )
+        )}
+               
       </tbody>
       </table>
       </div>
@@ -133,6 +139,5 @@ export default function Bill() {
       </div>
       </div>
       </div>
-   
-  )
+    )
 }

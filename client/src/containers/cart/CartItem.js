@@ -1,88 +1,190 @@
-import React,{useContext,useState,useEffect}from 'react'
- import productContext from '../../context/productContext/productContext'
+import React,{useContext,useState,useEffect}from 'react';
+import { createBrowserHistory } from 'history';
+import moment from "moment";
+import { Popconfirm,message} from 'antd';
+
+import CustomerContext from '../../context/customerContext/CustomerContext';
+import AdminContext from '../../context/adminContext/adminContext'
+import InvoiceContext from '../../context/invoiceContext/InvoiceContext'
 
 export default function CartItem(props) {
-  const {items}=props
- 
+  const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+  const { items } = props
+  const { getCustomer,customers } = useContext(CustomerContext);
+  const { adminDetails } = useContext(AdminContext);
+  const { addInvoice,success,error } = useContext(InvoiceContext);
+  if(error !== null){
+    console.log(error.msg)
+    console.log(error)
+  }
+  const history = createBrowserHistory();
+    useEffect(()=>{
+      getCustomer()
+      //eslint-disable-next-line
+    },[]);
+
+    //get order number if it true than set this order number in chalan
+    const [ordNum, setOrdNum] = useState();
+    const onSub=e=>{
+            e.preventDefault()
+            const actual = customers.filter(customer => customer.orderNumber == ordNum );
+            const num = actual[0]
+            if(num !== undefined){
+              setOrderNumber(num.orderNumber);
+              setCustomerId(num._id);
+              setAddress(num.address);
+              setmobile(num.mobile);
+              setEmail(num.email);
+              message.success('Set Order Number');
+            }else{
+              setOrderNumber('');
+              setCustomerId('')
+              setAddress('');
+              setmobile('');
+              setEmail('');
+              message.error('Incorrect Order Number');
+            }
+      }
+
   
-
-  const [orderNumber, setOrderNumber] = useState(114195);
-  const [address, setAddress] = useState('pirganj');
+  const [orderNumber, setOrderNumber] = useState();
+  const [customerId, setCustomerId] = useState();
+  const [address, setAddress] = useState('');
+  const [mobile, setmobile] = useState('');
+  const [email, setEmail] = useState('');
   const [products, setProducts] = useState(items);
-  const [qty, setQty] = useState(1);
-  const [totalPacking, setTotalPacking] = useState(1);
 
-  //   const getItem = id => {
-  //   const product = products.find(item => item._id === id);
-  //   return product;
-  // };
+  console.log(customerId)
 
   const increment=(id,incre)=>{
-    let tempProduct = [...products];
-    const selectedProduct = tempProduct.find(item =>  item._id === id);
-    const index = tempProduct.indexOf(selectedProduct);
-    const product = tempProduct[index];
-    product.count = product.count + incre;
-    setProducts(tempProduct)
+        let tempProduct = [...products];
+        const selectedProduct = tempProduct.find(item =>  item._id === id);
+        const index = tempProduct.indexOf(selectedProduct);
+        const product = tempProduct[index];
+        delete product.count;
+        delete product.inCart;
+        delete product.total;
+        delete product.updatedAt;
+        delete product.createdAt
+        product.stock = product.stock-incre
+        product.qty = 1
+        product.qty =incre
+        setProducts(tempProduct)
    }
-   const decrement=(id,decre)=>{
-    let tempProduct = [...products];
-    const selectedProduct = tempProduct.find(item =>  item._id === id);
-    const index = tempProduct.indexOf(selectedProduct);
-    const product = tempProduct[index];
-    product.count = product.count - decre;
-    
+
+   const totalPacking=(id,packing)=>{
+        let tempProduct = [...products];
+        const selectedProduct = tempProduct.find(item =>  item._id === id);
+        const index = tempProduct.indexOf(selectedProduct);
+        const product = tempProduct[index];
+        product.totalPacking = 1
+        product.totalPacking = packing
+        setProducts(tempProduct);
    }
 
- 
- const newChalan={orderNumber,address,products}
+   const removeItem=(id)=>{
+        let tempProducts = [...products];
+        const tempCart = tempProducts.filter(item => item._id !== id);
+        setProducts(tempCart);
+   }
 
-  // const onChange=e=>{setFormData({...formData,[e.target.name]:e.target.value})}
+    function confirm(id) {
+        removeItem(id);
+        message.success('Remove Successfull');
+    }
+  
+    function cancel(e) {
+        message.error('Click on No');
+    }
+     
 
 
+    const oldStock = items.map(product=>{
+            product.stock,product._id
+    })
+    const selProduct=products.map(product=>{
+      product.stock,product._id
+    })
+     const customerObject={orderNumber,customerId,address,mobile,email}
+     const invoiceObject={customerObject,products }
 
-const onSubmit=e=>{
-  e.preventDefault();
-console.log(newChalan)
-  alert('oky')
-  // updateProduct(formData);
-  // clearEditForm();
-  // props.history.push('/dashboard/stock')
-  // message.success('Update Successfull');
-}
-
-
+      const onSubmit=e=>{
+          e.preventDefault();
+          if( orderNumber == "" ||  address == "" || mobile == "" || email=="" || products==[]){
+            message.error('Fill All File');
+          }else{
+            console.log(invoiceObject)
+              addInvoice(invoiceObject)
+            // if(success){
+              message.success('Successfully Complete Invoice');
+              history.push('/dashboard')
+            // }else{
+            //   message.error('server error');
+            // }
+          }
+          
+        }
 
     return (
         
-        <div className="customer product details m-auto text-center">
-           <div className="form-group">
-                      <label htmlFor="OrderNumber"> OrderNumber: </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        name="orderNumber"
-                         value={orderNumber}
-                         required
-                         disabled
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="name"> Address: </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="address"
-                        value={address}
-                         disabled
-                         required
-                      />
-                    </div>
+        <div className="m-auto text-center container">
+   
+
+        <div className="card">
+      <div className="card-header">
+      Invoice
+      <strong> {currentDate}</strong> 
+      <span className="float-right"> <strong>Status:</strong>Pending</span>
+      </div>
+     
+                          <div className="form-group  m-auto p-3">
+                            <form onSubmit={e=>onSub(e)} className="form-inline">
+                            <div class="form-group mx-sm-3 mb-2">
+                            <label for="inputPassword2" class="sr-only">Set  Order Number: </label>
+                              <input
+                              type="number"
+                              className="form-control"
+                              placeholder="Enter Order Number"
+                              name="ordNmb" 
+                              onChange={e=> setOrdNum(e.target.value)}
+                              required
+                             />
+                             </div>
+                              <button type="submit" class="btn btn-primary mb-2">Set</button>
+                             </form>
+                          </div>
+                         
+   
+      <div class="card-body">
+      <div class="row mb-4">
+      <div class="col-sm-6">
+      <h6 class="mb-3">From:</h6>
+      <div>
+          <strong>{adminDetails.companyName}</strong>
+      </div>
+      <div>{adminDetails.companyDetails}</div>
+                <div>Address: {adminDetails.companyAddress}</div>
+                <div>Email: {adminDetails.companyEmail}</div>
+                <div>Phone: {adminDetails.companyMobile}</div>
+      </div>
+      
+      <div class="col-sm-6">
+          <h6 class="mb-3">To:</h6>
+          <div>
+        <strong>Order Number: {orderNumber}</strong>
+          </div>
+        <div>Address: {address}</div>
+                    <div>Email: {email}</div>
+          <div>Phone: {mobile}</div>
+      </div>
+      
+      
+      
+      </div>
+      </div>
+      </div>
                    
         <table className="table  table-sm table-bordered table-striped text-center" style={{}}>
-        <thead>
-    
-        </thead>
         <thead>
             
         <tr>
@@ -94,40 +196,44 @@ console.log(newChalan)
             <th scope="col">Total Packing</th>
             <th scope="col">Remove Product</th>
         </tr>
+
         </thead>
     
         <tbody>
-        
-     
-        {items.map((product,index)=>(
+      
+        {products.map((product,index)=>(
         <tr>
              <th scope="col">{index+1}</th>
-              <th> <img
-                 src={`/${product.image}`}
-                 style={{width:"3rem",height:"3rem"}}
-                 className="img-fluid"
-                 alt="product"
-                 />
+                <th>
+                  <img
+                  src={`/${product.image}`}
+                  style={{width:"3rem",height:"3rem"}}
+                  className="img-fluid"
+                  alt="product"
+                  />
                  </th>
             <th scope="col">{product.name}</th>
             <th scope="col">{product.unit}</th>
-            <th scope="col"> 
+            <th scope="col" style={{width:"150px"}}> 
                 <div class="form-group ">
-                  <select id="inputState"
-                  class="form-control"
-                  name='qty'
-                  onChange={()=>increment(product._id,qty)}>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  </select>
+                <input
+                type="number"
+                className="form-control"
+                name="address"
+                placeholder={`current stock ${product.stock}`}
+                onChange={(e)=>increment(product._id,e.target.value)}
+                required
+                />
+                
                 </div>
+             
               </th>
-            <th scope="col">
-            <div class="form-group">
-                <select id="inputState"
-                class="form-control"
-                name="totalPacking" 
+            <th scope="col"  style={{width:"100px"}}>
+            <div className="form-group">
+                 <select id="inputState"
+                  className="form-control"
+                  name="totalPacking" 
+                  onChange={(e)=>totalPacking(product._id,e.target.value)}
                 >
                   <option>1</option>
                   <option>2</option>
@@ -142,16 +248,28 @@ console.log(newChalan)
                 </select>
               </div>
             </th>
-            <th><button>remove</button></th>
+            <th>
+            <Popconfirm
+                 title="Are you sure delete this task?"
+                 onConfirm={()=>confirm(product._id)}
+                 onCancel={cancel}
+                 okText="Yes"
+                 cancelText="No"
+               >
+               <span><i className="fas fa-trash-alt"></i></span>
+               </Popconfirm>
+              
+            </th>
             
         </tr>
         ))}
-     
-        <button onClick={(e)=>onSubmit(e)} className="btn btn-primary my-3 d-block">Save</button>
-     
         </tbody>
     
         </table>
+        <div className="float-right">
+          <button onClick={(e)=>onSubmit(e)} className="btn btn-primary">Save Invoice</button>
+        </div>
+     
        
     </div>
     )

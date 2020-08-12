@@ -1,11 +1,11 @@
-import React,{useState,useContext,useEffect} from 'react'
+import React, { useState, useContext, useEffect,Fragment } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import Input from '../../components/uielements/input';
 import Checkbox from '../../components/uielements/checkbox';
 import Button from '../../components/uielements/button';
 import IntlMessages from '../../components/utility/intlMessages';
-import SignInStyleWrapper from './signin.style';
 import AdminContext from "../../context/adminContext/adminContext";
+import SignInStyleWrapper from './signin.style';
 export default function Signin(props) {
 
 const {loginAdmin,adminAuth,message,clearMessage} = useContext(AdminContext);
@@ -31,71 +31,52 @@ const onSubmit=e=>{
 
 
 const onChange=e=>{setFormData({...formData,[e.target.name]:e.target.value}); }
-  return (
-    <div>
-            <SignInStyleWrapper className="isoSignInPage">
-        <div className="isoLoginContentWrapper">
-          <div className="isoLoginContent">
-            <div className="isoLogoWrapper">
-             
-                <IntlMessages id="LogIn Your Account" />
-           
-            </div>
+  return <div className="conatiner">
+
+             <div className="row">
+          <div className="col-md-6 offset-md-3">
+            <h1 className="text-center display-6">Login Here</h1>
             <form onSubmit={e=>onSubmit(e)}>
-            <div className="isoSignInForm">
-              <div className="isoInputWrapper">
-                <Input size="large" 
-                placeholder="Username"
-                name="email"
-                value={email}
-                onChange={e=> onChange(e)} />
+             
+              <div className="form-group">
+                <label htmlFor="email"> Email: </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Enter Your Email"
+                  name="email"
+                  value={email}
+                  onChange={e=> onChange(e)}
+                />
+               
               </div>
-
-              <div className="isoInputWrapper">
-                <Input size="large" 
-                type="password" 
-                placeholder="Password" 
-                name="password"
-                value={password}
-                onChange={e=> onChange(e)}/>
+              <div className="form-group">
+                <label htmlFor="password"> Password: </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Enter Your Password"
+                  name="password"
+                  value={password}
+                  onChange={e=> onChange(e)}
+                />
               </div>
-
-              <div className="isoInputWrapper isoLeftRightComponent">
-                <Checkbox>
-                  <IntlMessages id="page.signInRememberMe" />
-                </Checkbox>
-                <Button type="primary" htmlType="submit">
-          Login
-        </Button>
-              </div>
-
-              {/* <p className="isoHelperText">
-                <IntlMessages id="email d" />
-              </p> */}
-
-              <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="/forgotpassword" className="isoForgotPass">
-                  <IntlMessages id="page.signInForgotPass" />
-                </Link>
-            
-              </div>
+  
               <div className="question">
-            
-           
-              {message !== null && <button className="alert alert-danger">
-              {message.msg ? message.msg : message.message[0].msg}
-                 <span onClick={()=>clearMessage()}>X</span>
-              </button>
-                }
-            </div>  
-                
-            </div>
+                {message !== null && <button className="danger">
+                {message.msg ? message.msg : message.errors[0].msg}
+                   <span onClick={()=>clearMessage()}>X</span>
+                </button>
+                  }
+              </div>
+              <Link to="/register" className="text-primary">Don no have Account? Register Here</Link>
+              <button className="btn btn-primary my-3 d-block">login</button>
             </form>
           </div>
         </div>
-      </SignInStyleWrapper>
-    </div>
-  )
+      
+  
+      </div>
 }
 
 

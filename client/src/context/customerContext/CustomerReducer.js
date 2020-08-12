@@ -1,5 +1,7 @@
 import {
     GET_CUSTOMER,
+    GET_SINGLE_CUSTOMER,
+    ADD_CUSTOMER,
     SET_MESSAHE,
     UPDATE_CUSTOMER,
     CLEAR_MESSAGE,
@@ -15,6 +17,11 @@ export default (state,action)=>{
             return{
                 ...state,
                customers: action.payload,
+            }
+          case GET_SINGLE_CUSTOMER:
+            return{
+                ...state,
+               customer: action.payload,
             }
 
             case  UPDATE_CUSTOMER:

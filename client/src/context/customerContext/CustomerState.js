@@ -1,9 +1,10 @@
 import React,{useReducer} from 'react'
 import Axios from 'axios'
-import CustomerContext from '../customerContext/CustomerContextt'
+import CustomerContext from '../customerContext/CustomerContext'
 import CustomerReducer from '../customerContext/CustomerReducer'
 import {
     GET_CUSTOMER,
+    GET_SINGLE_CUSTOMER,
     SET_MESSAHE,
     UPDATE_CUSTOMER,
     CLEAR_MESSAGE,
@@ -25,11 +26,27 @@ import {
 // admin get all customer
 const getCustomer=async()=>{
   try {
-    const res=await Axios.get('/api/allCustomert')
+    const res=await Axios.get('/api/allCustomer')
     console.log(res.data)
     dispatch({
       type:GET_CUSTOMER,
-      payload:res.data.docs
+      payload:res.data
+  })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+// admin get single customer
+const getSingleCustomer=async(id)=>{
+  console.log(id,'state')
+  try {
+    const res=await Axios.get(`/api/singleCustomer/${id}`)
+    console.log(res.data)
+    dispatch({
+      type:GET_SINGLE_CUSTOMER,
+      payload:res.data
   })
   } catch (error) {
     console.log(error)
@@ -75,14 +92,14 @@ const deleteCustomer = async (id)=>{
 
   //
    //update customer
- const updateCustomer=async(data)=>{
+ const updateCustomer=async(customer)=>{
 
   const config={
       header:{
           'Content-Type':'application/json'
       }
   }
-  const res=await Axios.put(`/api/updateCustomer/${customer._id}`,data,config)
+  const res=await Axios.put(`/api/updateCustomer/${customer._id}`,customer,config)
  console.log(res)
   try {
        
@@ -130,6 +147,7 @@ const editFormFun=(customer)=>{
        customers:state.customers,
        customer:state.customer,
        getCustomer,
+       getSingleCustomer,
        addCustomer,
        message:state.message,
        editForm:state.editForm,

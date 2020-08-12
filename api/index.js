@@ -1,5 +1,7 @@
 const AdminRoutes = require('./adminRoute/adminRoute');
 const ProductRoute = require('./ProductRoute/productRoute')
+const CustomerRoute = require('./customerRoute/customerRoute');
+const InvoiceRoute = require('./invoiceRoute/invoiceRoute');
 
 const routes = [
   {
@@ -9,6 +11,14 @@ const routes = [
   {
     path: '/api',
     handler: ProductRoute,
+  },
+  {
+    path: '/api',
+    handler: CustomerRoute,
+  },
+  {
+    path: '/api',
+    handler: InvoiceRoute,
   },
 
 ];

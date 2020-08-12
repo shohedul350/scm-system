@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate');
 
 const billSchema = mongoose.Schema({
    customer: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
         required: true,
     },
@@ -19,7 +19,7 @@ const billSchema = mongoose.Schema({
 {
   timestamps: true,
 });
-billSchema.index({ mobile: 'text'});
+billSchema.index({ customer: 'text'});
 
 
 billSchema.plugin(mongoosePaginate);

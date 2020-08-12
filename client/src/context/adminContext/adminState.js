@@ -16,7 +16,12 @@ import {
  const AdminState=(props)=> {
 
     const initialState={
-        admin:{},
+        adminDetails:{
+            companyName:"lalmonirhat Plastic",
+            companyAddress:"All Kinds of  Plastic,Rubber,Bag & Light Manufacturer & Suppliers",
+            companyEmail:"136/A Dholpur,Bow Bazar,Zatrabari,Dhaka",
+            companyMobile:"01710488865"
+        },
         adminAuth:true,
         message:null,
     }
@@ -139,6 +144,7 @@ try{
          adminAuth:state.adminAuth,
         message:state.message,
         getAdmin,
+        adminDetails:state.adminDetails,
         registerAdmin,
         loginAdmin,
         logout,

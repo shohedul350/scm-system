@@ -1,19 +1,18 @@
+
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import Bill from './Bill'
+import Invoice from './CustomerInvoice'
  
-class ComponentToPrint extends React.Component {
-  render() {
-    return (
-        <div>
- <Bill/>
-        </div>
-   
-    );
-  }
-}
+// class ComponentToPrint extends React.Component {
+  
+//   render() {
+//     return <h1>hi</h1>
+  
+//   }
+// }
  
-const Print = () => {
+const Print = (props) => {
+  console.log(props.name)
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -21,7 +20,7 @@ const Print = () => {
  
   return (
     <div className="">
-      <ComponentToPrint ref={componentRef} />
+      {/* <Invoice ref={componentRef} /> */}
    
      
      
@@ -38,3 +37,8 @@ const Print = () => {
   );
 };
 export default Print
+
+
+
+
+
